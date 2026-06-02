@@ -1,6 +1,0 @@
-timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
-1780395853839,909,HTTP Request,200,OK,Thread Group 1-1,text,true,,83693,116,1,1,https://www.google.com/,820,0,441
-1780395857316,552,HTTP Request,200,OK,Thread Group 1-1,text,true,,83650,116,1,1,https://www.google.com/,399,0,0
-1780395864777,686,HTTP Request,200,OK,Thread Group 1-1,text,true,,745,231,1,1,https://practice.expandtesting.com/notes/api/users/profile,686,0,385
-1780395872432,543,Failing request,404,Not Found,Thread Group 1-1,text,false,,28376,152,1,1,https://practice.expandtesting.com/6a0c7b81038935029660dcde,435,0,116
-1780395873151,486,JSR223 Sampler,200,OK,Thread Group 1-1,text,true,,0,0,1,1,null,0,0,0
