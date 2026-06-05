@@ -27,9 +27,12 @@ jobs:
          tar -xzf apache-jmeter-${JMETER_VERSION}.tgz
          echo "JMETER_HOME=$(pwd)/apache-jmeter-${JMETER_VERSION}" >> $GITHUB_ENV
          echo "$(pwd)/apache-jmeter-${JMETER_VERSION}/bin" >> $GITHUB_PATH
+    
+    -  name: create results directory
+       run: mkdir -p results
 
     -  name: Run jmeter
-       run: jmeter \
+       run: $JMETER_HOME/bin/jmeter \
          -n \
          -t test2.jmx \
          -l results/results.jtl \
