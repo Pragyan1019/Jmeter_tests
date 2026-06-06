@@ -33,7 +33,7 @@ jobs:
 
     -  name: Run jmeter
        run: |
-         $JMETER_HOME/bin/jmeter -n -t test2.jmx -l results/results.jtl -e -o results/reports -Jjmeter.save.saveservice.output_format=xml
+         $JMETER_HOME/bin/jmeter -n -t test2.jmx -l results/results.jtl -e -o results/reports 
 
     -  name: Upload jmeter report
        uses: actions/upload-artifact@v4
