@@ -2,16 +2,19 @@ name: Performance Testing
 on:
   push:
     branches: [ main ]
+
 jobs:
   performance-test:
     runs-on: ubuntu-latest
     env:
       JMETER_THREADS: 10
-    steps:
-    - name: Checkout node
-      uses: actions/checkout@v4
+      JMETER_VERSION: 5.6.3
 
-    - name: Setup JAVA
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4        # ← this is what pulls test2.jmx from repo
+
+    - name: Setup Java
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
@@ -19,29 +22,40 @@ jobs:
 
     - name: Install JMeter
       run: |
-        JMETER_VERSION=5.6.3
         wget -q https://downloads.apache.org/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
         tar -xzf apache-jmeter-${JMETER_VERSION}.tgz
         echo "JMETER_HOME=$(pwd)/apache-jmeter-${JMETER_VERSION}" >> $GITHUB_ENV
         echo "$(pwd)/apache-jmeter-${JMETER_VERSION}/bin" >> $GITHUB_PATH
+
+    - name: Verify test plan exists      
+      run: |
+        if [ ! -f test2.jmx ]; then
+          echo "ERROR: test2.jmx not found in repo root"
+          exit 1
+        fi
+        echo "test2.jmx found ✓"
 
     - name: Create results directory
       run: mkdir -p results/reports
 
     - name: Run JMeter
       run: |
-        $JMETER_HOME/bin/jmeter -n -t test2.jmx \
+        $JMETER_HOME/bin/jmeter -n \
+          -t test2.jmx \
           -l results/results.jtl \
-          -Jthreads=$JMETER_THREADS  
+          -Jthreads=$JMETER_THREADS
 
-    - name: Generate HTML Report       
+    - name: Verify results exist         
       run: |
-        if [ -s results/results.jtl ]; then
-          $JMETER_HOME/bin/jmeter -g results/results.jtl -o results/reports
-        else
-          echo "JTL is empty — no samples were collected"
+        if [ ! -s results/results.jtl ]; then
+          echo "ERROR: JTL is empty — 0 samples collected"
           exit 1
         fi
+        echo "Samples collected: $(wc -l < results/results.jtl) lines ✓"
+
+    - name: Generate HTML Report
+      run: |
+        $JMETER_HOME/bin/jmeter -g results/results.jtl -o results/reports
 
     - name: Upload JMeter report
       uses: actions/upload-artifact@v4
