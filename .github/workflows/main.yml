@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4        # ← this is what pulls test2.jmx from repo
+      uses: actions/checkout@v4       
 
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -33,7 +33,7 @@ jobs:
           echo "ERROR: test2.jmx not found in repo root"
           exit 1
         fi
-        echo "test2.jmx found ✓"
+        echo "test2.jmx found"
 
     - name: Create results directory
       run: mkdir -p results/reports
@@ -51,7 +51,7 @@ jobs:
           echo "ERROR: JTL is empty — 0 samples collected"
           exit 1
         fi
-        echo "Samples collected: $(wc -l < results/results.jtl) lines ✓"
+        echo "Samples collected: $(wc -l < results/results.jtl) lines "
 
     - name: Generate HTML Report
       run: |
